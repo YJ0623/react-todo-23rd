@@ -1,5 +1,7 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-  
+  --color-main: #f9f7f7;
+  --color-midBlue: #7aaace;
+  --color-skyBlue: #dbe2ef;
 }

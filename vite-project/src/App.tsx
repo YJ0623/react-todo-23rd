@@ -1,8 +1,7 @@
 const App = () => {
+  
   return (
-    <div className="bg-amber-50">
-      
-    </div>
-  )
-}
-export default App
+    <div></div>
+  );
+};
+export default App;
