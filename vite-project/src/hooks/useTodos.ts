@@ -2,12 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import type { TodoData, Todo } from "../../types/todo";
 import { getTodosFromStorage, setTodosToStorage } from "../../utils/storage";
 
-const getTodayDateString = () => {
+export const getTodayDateString = () => {
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
     const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    return `${year}년 ${month}월 ${day}일`;
 }
 
 export const useTodos = () => {
@@ -24,7 +24,7 @@ export const useTodos = () => {
     // CRUD함수를 useCallback으로 구현(useState를 사용하면 리렌더링이 자주 발생하는 문제가 생김. 따라서 자식 컴포넌트에 props로 넘겨주기만 하는 useCallback 사용)
     const addTodo = useCallback((date: string, text: string) => {
         const newTodo: Todo = {
-            id: crypto.randomUUID(),
+            id: crypto.randomUUID(), // 이거 다른분 1주차 코드리뷰때 있던것같아서 Date.now()로 안하고 UUID함수 썼습니다.
             title: text,
             isCompleted: false,
         };
