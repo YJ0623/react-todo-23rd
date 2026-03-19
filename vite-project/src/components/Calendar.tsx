@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { TodoData } from '../../types/todo';
-import { getTodayDateString } from '../hooks/useTodos.ts'; // 경로 맞게 수정
+import { getTodayDateString } from '../hooks/useTodos.ts';
 
 interface CalendarProps {
   todos: TodoData;
@@ -42,17 +42,17 @@ export const Calendar = ({
   const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
 
   return (
-    <div className="border border-gray-200 rounded-lg p-5 bg-white shadow-sm">
+    <div className="border border-gray-200 dark:border-none rounded-lg p-5 bg-white dark:bg-graybg dark:text-cream shadow-sm">
       {/* 1. 헤더 영역 */}
       <header className="mb-6">
-        <div className="text-sm text-gray-500 mb-6">
+        <div className="text-sm text-gray-500 dark:text-cream mb-6">
           오늘: {today.getFullYear()}년 {today.getMonth() + 1}월{' '}
           {today.getDate()}일
         </div>
         <div className="flex justify-between items-center">
           <button
             onClick={handlePrevMonth}
-            className="px-3 py-1 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors cursor-pointer"
+            className="px-3 py-1 bg-gray-100 dark:bg-darkbg rounded-md hover:bg-gray-200 transition-colors cursor-pointer"
           >
             &lt;
           </button>
@@ -61,7 +61,7 @@ export const Calendar = ({
           </h2>
           <button
             onClick={handleNextMonth}
-            className="px-3 py-1 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors cursor-pointer"
+            className="px-3 py-1 bg-gray-100 dark:bg-darkbg rounded-md hover:bg-gray-200 transition-colors cursor-pointer"
           >
             &gt;
           </button>
@@ -73,7 +73,15 @@ export const Calendar = ({
         {weekDays.map((day) => (
           <div
             key={day}
-            className={`font-semibold py-2 ${day === '일' ? 'text-red-600' : day === '토' ? 'text-blue-600' : 'text-gray-600'}`}
+            className={`font-semibold py-2 
+              ${
+                day === '일'
+                  ? 'text-red-600 dark:text-red-400'
+                  : day === '토'
+                    ? 'text-blue-600 dark:text-blue-400'
+                    : 'text-gray-600 dark:text-gray-300'
+              }
+            `}
           >
             {day}
           </div>
@@ -96,34 +104,41 @@ export const Calendar = ({
           const incompleteCount = dayTodos.filter(
             (todo) => !todo.isCompleted
           ).length;
+          const completedCount = dayTodos.length - incompleteCount;
 
           return (
             <div
               key={dateString}
               onClick={() => setSelectedDate(dateString)}
               className={`
-                min-h-[80px] p-2 rounded-md flex flex-col items-center cursor-pointer transition-all border
+                min-h-[80px] p-2 rounded-md flex flex-col items-center cursor-pointer transition-all dark:text-white border border-px dark:border-gray-600
                 ${
                   isSelected
-                    ? 'border-blue-500 bg-blue-50 ring-1 ring-blue-500'
-                    : 'border-gray-100 hover:bg-gray-50'
+                    ? 'border-blue-500 dark:border-deepBlue bg-blue-50 dark:bg-deepBlue ring-1 ring-blue-500'
+                    : 'border-gray-100 hover:bg-gray-50 dark:hover:bg-deepBlue'
                 }
               `}
             >
               <div
-                className={`font-medium ${isToday ? 'text-midBlue' : 'text-gray-800'}`}
+                className={`font-medium dark:text-white ${isToday ? 'text-midBlue' : 'text-gray-800'}`}
               >
                 {day}
               </div>
 
               {isToday && (
-                <span className="text-[10px] font-bold text-midBlue leading-none mt-1">
+                <span className="text-[10px] font-bold text-midBlue leading-none mt-1 mb-1">
                   today
                 </span>
               )}
 
+              {completedCount > 0 && (
+                <div className="text-xs text-deepBlue font-medium">
+                  완료: {completedCount}
+                </div>
+              )}
+
               {incompleteCount > 0 && (
-                <div className="text-xs text-deepBlue font-medium mt-auto mb-1">
+                <div className="text-xs text-deepBlue font-medium">
                   미완료: {incompleteCount}
                 </div>
               )}

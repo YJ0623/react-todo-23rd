@@ -25,7 +25,10 @@ export const TodoList = ({
     setUserInput(e.target.value);
   };
 
-  const handleSubmit = () => {
+  // React.FormEvent는 이제 사용 비권장이 됐습니다. 공식 문서는 노션에 업로드해놓을테니 확인해봐도 좋을 것 같습니다.
+  const handleSubmit = (e: React.SubmitEvent) => {
+    e.preventDefault();
+
     if (!userInput.trim()) return;
 
     addTodo(selectedDate, userInput);
@@ -33,8 +36,9 @@ export const TodoList = ({
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex gap-2 h-[40px]">
+    <div className="flex flex-col gap-4 mt-4">
+      <h2 className="text-xl text-black dark:text-cream font-semibold mb-4">{selectedDate} 할 일 목록</h2>
+      <form onSubmit={handleSubmit} className="flex gap-2 h-[40px]">
         <input
           type="text"
           value={userInput}
@@ -43,12 +47,12 @@ export const TodoList = ({
           placeholder="새로운 할 일을 입력하세요"
         />
         <button
-          onClick={handleSubmit}
+          type="submit"
           className="bg-midBlue w-[100px] text-white px-4 py-2 rounded cursor-pointer"
         >
           추가
         </button>
-      </div>
+      </form>
 
       <ul className="flex flex-col gap-2 mt-4">
         {currentTodos.map((todo) => (
@@ -56,17 +60,24 @@ export const TodoList = ({
             key={todo.id}
             className="flex justify-between items-center border-b pb-2"
           >
-            <span className={`${todo.isCompleted === true ? 'text-gray-400 font-semibold line-through' : 'text-black font-semibold'}`}>{todo.title}</span>
+            <span
+              className={`${todo.isCompleted === true ? 'text-gray-400 font-semibold line-through' : 'text-black dark:text-cream font-semibold'}`}
+            >
+              {todo.title}
+            </span>
             <div className="flex gap-2 h-10">
               {!todo.isCompleted && (
                 <button
                   onClick={() => toggleTodo(selectedDate, todo.id)}
-                  className="w-[80px] border bg-deepBlue text-white rounded-lg cursor-pointer"
+                  className="w-[80px] border dark:border-none bg-deepBlue text-white rounded-lg cursor-pointer"
                 >
                   완료
                 </button>
               )}
-              <button onClick={() => deleteTodo(selectedDate, todo.id)} className='w-[80px] bg-white border rounded-lg cursor-pointer'>
+              <button
+                onClick={() => deleteTodo(selectedDate, todo.id)}
+                className="w-[80px] bg-white dark:bg-darkbg border dark:border-none rounded-lg cursor-pointer"
+              >
                 삭제
               </button>
             </div>
